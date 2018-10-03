@@ -1,0 +1,11 @@
+<div id="reportdiv">
+	<form id="reportform" enctype="application/x-www-form-urlencoded" action="/report" method="post">
+		<h1 class="title-white">Povratne informacije</h1>
+		<input class="box" type="text" placeholder="Naslov prijave..." name="title" required/><br/>
+		<input class="box" type="text" placeholder="Opis prijave..." name="desc" required/><br/>
+				<!--center><label><b class="purp2">Tip prijave:</b></label><br/-->
+		<input class="radio" type="radio" name="typenapake" value="bugg"><span style="font-size: 11px" required>Prijava napake (bugg)</span></input>
+		<input class="radio" type="radio" name="typenapake" value="feedback" required><span style="font-size: 11px">Povratna informacija</span></input>
+		<center><input type="submit" class="submit"/></center>
+	</form>
+</div>
