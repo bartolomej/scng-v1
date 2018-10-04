@@ -2,34 +2,39 @@ var fs = require('fs');
 var util = require('util');
 var async = require('async');
 
-module.exports.saveReqData = function(req, url, filename, callback) {
-    var json;
-	fs.readFile(filename + '.json', function (err, data) {
+module.exports.saveReqData = function(req, filename, callback) {
+	fs.readFile(__dirname + "/../store/" + filename + '.json', function (err, data) {
+        var json;
 		if (err) {
-			callback(err)
+			callback("error")
 		}
 		try {
             json = JSON.parse(data)
+			console.log("file data: " + json.toString())
         } catch (e) {
-			json = JSON.parse('[' + data + ']')
-        }
-
-		    console.log(util.inspect(json));
+			console.log(e)
+			callback("error")
+		}
 		var reqObj = {
 			ip: req.ip,
-			url: url,
+			url: req.path,
 			time: new Date()
 		};
 		json.push(reqObj);
-		fs.writeFile(filename + ".json", JSON.stringify(json, null, 4));
+		console.log("json" + json.toString())
+		try {
+            fs.writeFile(__dirname + "/../store/" + filename + ".json", JSON.stringify(json, null, 4));
+        } catch (e) {
+			callback("error")
+        }
 		callback(null, 'success')
 	})
 };
 
-module.exports.numOfReqForPaths = function(filenames, callback) {
-    var array = []; // how to pass this array to upper callback
+module.exports.requestsForPaths = function(filenames, callback) {
+    var array = [];
     async.forEachOf(filenames, (value, key, callback) => {
-    	fs.readFile(value + '.json', 'UTF-8', (err, data) => {
+    	fs.readFile(__dirname + "/../store/" + value + '.json', 'UTF-8', (err, data) => {
     		try {
 				array.push(JSON.parse(data));
             } catch (e) {

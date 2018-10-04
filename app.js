@@ -12,7 +12,6 @@ var app = express();
 
 switch (app.get('env')) {
 	case 'development':
-		console.log(app.get('env'))
 		app.use(require('morgan')('dev'))
 		break;
 	case 'production':

@@ -4,14 +4,14 @@ var fs = require('fs');
 var monitor = require('../controllers/monitor');
 
 router.get('/', (req, res) => {
-	monitor.saveReqData(req, '/', 'index', (err, success) => {
+	monitor.saveReqData(req, 'index', (err, success) => {
 		if (err) { console.log(err) }
 	});
 	res.render('index');
 });
 
 router.get('/requests', (req, res) => {
-	monitor.numOfReqForPaths(["index", "download", "report"], (err, result) => {
+	monitor.requestsForPaths(["index", "download", "report"], (err, result) => {
 		if (err) console.log(err)
 		res.json(result)
 	})
@@ -19,17 +19,21 @@ router.get('/requests', (req, res) => {
 
 router.get('/downloadapp', (req, res, next) => {
 	var file = __dirname + '/../public/files/' + 'app-debug.apk';
-	monitor.saveReqData(req, '/downloadapp', 'downloadapp');
+	monitor.saveReqData(req, 'downloadapp', (err) => {
+		if (err) console.log(err)
+	});
 	res.download(file);
 });
 
 router.get('/report', (req, res) => {
-	monitor.saveReqData(req, '/report', 'report');
+	monitor.saveReqData(req, 'report', (err) => {
+		if (err) console.log(err)
+	});
 	res.render('report');
 });
 
 router.get('/updates', (req, res) => {
-	monitor.saveReqData(req, '/download', 'download', (err) => {
+	monitor.saveReqData(req, 'download', (err) => {
 		if (err) { console.log(err) } 
 	});
 	res.render('download', { msg: "Prenesi poskusno Beta verzijo !" } );
